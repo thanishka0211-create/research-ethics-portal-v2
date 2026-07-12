@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const bodyParser = require("body-parser");
+const path = require("path");
 
 const db = require("./config/db");
 
@@ -14,18 +15,21 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+// Serve Frontend
+app.use(express.static(path.join(__dirname, "../frontend")));
+
 // Home Route
 app.get("/", (req, res) => {
-    res.send("Research Ethics Committee Portal Backend");
+    res.sendFile(path.join(__dirname, "../frontend/index.html"));
 });
 
-// Routes
+// API Routes
 app.use("/api/users", userRoutes);
-app.use("/applications",applicationRoutes);
+app.use("/applications", applicationRoutes);
 
 // Start Server
-const PORT = 5000;
+const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on port ${PORT}`);
 });
