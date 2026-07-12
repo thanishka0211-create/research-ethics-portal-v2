@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Ethics Portal - Register</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- SweetAlert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-left">
+        <img src="logo.png" class="logo" alt="University Logo">
+        <h1>Research Ethics Portal</h1>
+    </div>
+
+</header>
+
+<div class="container">
+
+    <h2 style="text-align:center;color:#1E3A5F;margin-bottom:20px;">
+        Researcher Registration
+    </h2>
+
+    <form id="registerForm">
+
+        <input type="text" id="full_name" placeholder="Full Name" required>
+
+        <input type="email" id="email" placeholder="Email Address" required>
+
+        <input type="password" id="password" placeholder="Password" required>
+
+        <input type="text" id="phone" placeholder="Phone Number">
+
+        <input type="text" id="department" placeholder="Department / School">
+
+        <select id="designation">
+            <option value="">Select Designation</option>
+            <option>Student</option>
+            <option>Research Scholar</option>
+            <option>Faculty</option>
+        </select>
+
+        <button type="submit">Register</button>
+
+    </form>
+
+    <br>
+
+    <p style="text-align:center;">
+        Already have an account?
+        <a href="login.html">Login</a>
+    </p>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
