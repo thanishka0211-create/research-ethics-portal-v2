@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<style>
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+th{
+    background:#1E3A5F;
+    color:white;
+}
+
+tr:nth-child(even){
+    background:#f8fafc;
+}
+
+button{
+    padding:8px 14px;
+    margin:3px;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-left">
+        <img src="logo.png" class="logo" alt="Vidyashilp University Logo">
+        <h1>Research Ethics Portal</h1>
+    </div>
+
+    <button onclick="logout()" class="logout-btn">
+        Logout
+    </button>
+
+</header>
+
+<div class="container">
+
+<h2 style="text-align:center;color:#1E3A5F;margin-bottom:20px;">
+    Admin Dashboard
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>ID</th>
+<th>Research Title</th>
+<th>Research Area</th>
+<th>Principal Investigator</th>
+<th>Status</th>
+<th>Action</th>
+</tr>
+
+</thead>
+
+<tbody id="adminTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+const table = document.getElementById("adminTable");
+
+loadApplications();
+
+function loadApplications(){
+
+table.innerHTML="";
+
+fetch("http://localhost:5000/applications")
+.then(res=>res.json())
+.then(data=>{
+
+data.forEach(app=>{
+
+table.innerHTML += `
+<tr>
+
+<td>${app.project_id}</td>
+<td>${app.research_title}</td>
+<td>${app.research_area}</td>
+<td>${app.principal_investigator}</td>
+
+<td>
+<span class="${app.status.toLowerCase()}">
+${app.status}
+</span>
+</td>
+
+<td>
+
+${app.status==="Pending"
+
+?`
+
+<button onclick="updateStatus(${app.project_id},'Approved')">
+Approve
+</button>
+
+<button onclick="updateStatus(${app.project_id},'Rejected')">
+Reject
+</button>
+
+`
+
+:`<b>${app.status}</b>`}
+
+</td>
+
+</tr>
+`;
+
+});
+
+});
+
+}
+
+function updateStatus(id,status){
+
+fetch(`http://localhost:5000/applications/status/${id}`,{
+
+method:"PUT",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+status:status
+})
+
+})
+
+.then(res=>res.json())
+
+.then(data=>{
+
+Swal.fire({
+
+icon:status==="Approved"?"success":"warning",
+
+title:status==="Approved"
+?"Application Approved!"
+:"Application Rejected!",
+
+text:data.message,
+
+confirmButtonColor:"#1E3A5F"
+
+}).then(()=>{
+
+loadApplications();
+
+});
+
+})
+
+.catch(err=>{
+
+console.log(err);
+
+Swal.fire({
+
+icon:"error",
+
+title:"Update Failed!",
+
+text:"Unable to update application status.",
+
+confirmButtonColor:"#1E3A5F"
+
+});
+
+});
+
+}
+
+function logout(){
+
+Swal.fire({
+
+title:"Logout?",
+
+text:"Are you sure you want to logout?",
+
+icon:"question",
+
+showCancelButton:true,
+
+confirmButtonColor:"#1E3A5F",
+
+cancelButtonColor:"#6c757d",
+
+confirmButtonText:"Yes, Logout",
+
+cancelButtonText:"Cancel"
+
+}).then((result)=>{
+
+if(result.isConfirmed){
+
+localStorage.removeItem("user");
+
+Swal.fire({
+
+icon:"success",
+
+title:"Logged Out!",
+
+text:"You have been logged out successfully.",
+
+confirmButtonColor:"#1E3A5F"
+
+}).then(()=>{
+
+window.location.href="login.html";
+
+});
+
+}
+
+});
+
+}
+
+</script>
+
+</body>
+</html>

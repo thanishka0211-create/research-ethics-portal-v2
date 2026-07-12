@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Research Ethics Portal - Dashboard</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-left">
+        <img src="logo.png" class="logo" alt="University Logo">
+        <h1>Research Ethics Portal</h1>
+    </div>
+
+    <button onclick="logout()" class="logout-btn">
+        Logout
+    </button>
+
+</header>
+
+<div class="container">
+
+    <h2 style="text-align:center;color:#1E3A5F;margin-bottom:25px;">
+        Researcher Dashboard
+    </h2>
+
+    <div class="dashboard">
+
+        <div class="card">
+            <h3>📝 New Research Application</h3>
+            <p>Submit a new ethics application for review.</p>
+            <br>
+
+            <a href="application.html">
+                <button>Apply Now</button>
+            </a>
+        </div>
+
+        <div class="card">
+            <h3>📂 My Applications</h3>
+            <p>Track the status of your submitted applications.</p>
+            <br>
+
+            <a href="myapplications.html">
+                <button>View Applications</button>
+            </a>
+        </div>
+
+        <div class="card">
+            <h3>🚪 Logout</h3>
+            <p>Securely sign out of your account.</p>
+            <br>
+
+            <button onclick="logout()">Logout</button>
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function logout(){
+
+    Swal.fire({
+        title: "Logout?",
+        text: "Are you sure you want to logout?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#1E3A5F",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, Logout",
+        cancelButtonText: "Cancel"
+    }).then((result) => {
+
+        if(result.isConfirmed){
+
+            localStorage.removeItem("user");
+
+            Swal.fire({
+                icon: "success",
+                title: "Logged Out!",
+                text: "You have been logged out successfully.",
+                confirmButtonColor: "#1E3A5F"
+            }).then(() => {
+                window.location.href = "login.html";
+            });
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>

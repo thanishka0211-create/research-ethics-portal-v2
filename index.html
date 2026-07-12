@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Research Ethics Portal</title>
+
+<link rel="stylesheet" href="style.css">
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-left">
+
+        <img src="logo.png" class="logo" alt="University Logo">
+
+        <h1>Research Ethics Portal</h1>
+
+    </div>
+
+</header>
+
+<div class="container">
+
+<h2 style="text-align:center;color:#1E3A5F;margin-bottom:20px;">
+    Welcome Back
+</h2>
+
+<form id="loginForm">
+
+<label>Email</label>
+<input type="email" id="email" required>
+
+<label>Password</label>
+<input type="password" id="password" required>
+
+<label>Role</label>
+<select id="role" required>
+    <option value="">Select Role</option>
+    <option value="Researcher">Researcher</option>
+    <option value="REC Member">Admin</option>
+</select>
+
+<button type="submit">Login</button>
+
+<p style="margin-top:20px;text-align:center;">
+    Don't have an account?
+    <a href="register.html">Register Here</a>
+</p>
+
+</form>
+
+</div>
+
+<script>
+
+document.getElementById("loginForm").addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
+    const role = document.getElementById("role").value;
+
+    try{
+
+        const response = await fetch("http://localhost:5000/api/users/login",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                email,
+                password,
+                role
+            })
+
+        });
+
+        const data = await response.json();
+
+        if(response.ok){
+
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            Swal.fire({
+                icon:"success",
+                title:"Login Successful!",
+                text:"Welcome to the Research Ethics Portal",
+                confirmButtonColor:"#1E3A5F"
+            }).then(()=>{
+
+                if(data.user.role === "REC Member"){
+                    window.location.href="admin.html";
+                }else{
+                    window.location.href="dashboard.html";
+                }
+
+            });
+
+        }else{
+
+            Swal.fire({
+                icon:"error",
+                title:"Login Failed",
+                text:data.message,
+                confirmButtonColor:"#1E3A5F"
+            });
+
+        }
+
+    }catch(error){
+
+        console.log(error);
+
+        Swal.fire({
+            icon:"error",
+            title:"Server Error",
+            text:"Unable to connect to the server.",
+            confirmButtonColor:"#1E3A5F"
+        });
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
