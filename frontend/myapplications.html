@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Applications</title>
+
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <style>
+        table{
+            width:100%;
+            border-collapse:collapse;
+            margin-top:20px;
+        }
+
+        th,td{
+            border:1px solid #ddd;
+            padding:12px;
+            text-align:center;
+        }
+
+        th{
+            background:#1E3A5F;
+            color:white;
+        }
+
+        tr:nth-child(even){
+            background:#f8fafc;
+        }
+
+        .approved{
+            color:#2E7D32;
+            font-weight:bold;
+        }
+
+        .pending{
+            color:#F9A825;
+            font-weight:bold;
+        }
+
+        .rejected{
+            color:#D32F2F;
+            font-weight:bold;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<header>
+
+    <div class="header-left">
+        <img src="logo.png" class="logo" alt="University Logo">
+        <h1>Research Ethics Portal</h1>
+    </div>
+
+    <button onclick="logout()" class="logout-btn">
+        Logout
+    </button>
+
+</header>
+
+<div class="container">
+
+<h2 style="text-align:center;color:#1E3A5F;margin-bottom:20px;">
+    My Applications
+</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Project ID</th>
+<th>Research Title</th>
+<th>Research Area</th>
+<th>Principal Investigator</th>
+<th>Status</th>
+</tr>
+
+</thead>
+
+<tbody id="applicationTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+const table = document.getElementById("applicationTable");
+
+const user = JSON.parse(localStorage.getItem("user"));
+
+fetch(`http://localhost:5000/applications?email=${user.email}`)
+.then(response => response.json())
+.then(data => {
+
+    if(data.length === 0){
+
+        table.innerHTML = `
+        <tr>
+            <td colspan="5">No Applications Submitted</td>
+        </tr>
+        `;
+
+    }else{
+
+        data.forEach(app=>{
+
+            let statusClass = "";
+
+            if(app.status === "Approved"){
+                statusClass = "approved";
+            }else if(app.status === "Rejected"){
+                statusClass = "rejected";
+            }else{
+                statusClass = "pending";
+            }
+
+            table.innerHTML += `
+            <tr>
+                <td>${app.project_id}</td>
+                <td>${app.research_title}</td>
+                <td>${app.research_area}</td>
+                <td>${app.principal_investigator}</td>
+                <td class="${statusClass}">
+                    ${app.status}
+                </td>
+            </tr>
+            `;
+
+        });
+
+    }
+
+})
+
+.catch(error=>{
+
+    console.log(error);
+
+    table.innerHTML = `
+    <tr>
+        <td colspan="5">Unable to load applications.</td>
+    </tr>
+    `;
+
+});
+
+</script>
+
+<script>
+
+function logout(){
+
+    Swal.fire({
+        title: "Logout?",
+        text: "Are you sure you want to logout?",
+        icon: "question",
+        showCancelButton: true,
+        confirmButtonColor: "#1E3A5F",
+        cancelButtonColor: "#6c757d",
+        confirmButtonText: "Yes, Logout",
+        cancelButtonText: "Cancel"
+    }).then((result)=>{
+
+        if(result.isConfirmed){
+
+            localStorage.removeItem("user");
+
+            Swal.fire({
+                icon: "success",
+                title: "Logged Out!",
+                text: "You have been logged out successfully.",
+                confirmButtonColor: "#1E3A5F"
+            }).then(()=>{
+                window.location.href="login.html";
+            });
+
+        }
+
+    });
+
+}
+
+</script>
+
+</body>
+</html>
