@@ -81,9 +81,10 @@ if (loginForm) {
         e.preventDefault();
 
         const loginData = {
-            email: document.getElementById("login_email").value,
-            password: document.getElementById("login_password").value
-        };
+    email: document.getElementById("login_email").value,
+    password: document.getElementById("login_password").value,
+    role: "Researcher"
+};
 
         try {
 
