@@ -1,17 +1,18 @@
 {
   "name": "research-ethics-portal",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Research Ethics Committee Portal",
+  "main": "backend/server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node backend/server.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.6",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
     "express": "^5.2.1",
-    "mysql2": "^3.22.6"
+    "mysql2": "^3.14.3"
   }
 }

@@ -20,7 +20,7 @@ if (registerForm) {
 
         try {
 
-            const response = await fetch("http://localhost:5000/api/users/register", {
+            const response = await fetch("https://research-ethics-portal-v2.onrender.com/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
