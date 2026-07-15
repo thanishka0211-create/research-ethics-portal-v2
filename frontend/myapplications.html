@@ -97,7 +97,7 @@ const table = document.getElementById("applicationTable");
 
 const user = JSON.parse(localStorage.getItem("user"));
 
-fetch(`https://research-ethics-portal-v2.onrender.com/applications?email=${user.email}}`)
+fetch(`https://research-ethics-portal-v2.onrender.com/applications?email=${user.email}`)
 .then(response => response.json())
 .then(data => {
 
