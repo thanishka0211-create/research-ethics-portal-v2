@@ -94,7 +94,7 @@ function loadApplications(){
 
 table.innerHTML="";
 
-fetch("http://localhost:5000/applications")
+fetch("https://research-ethics-portal-v2.0nrender.com/applications")
 .then(res=>res.json())
 .then(data=>{
 
@@ -145,7 +145,7 @@ Reject
 
 function updateStatus(id,status){
 
-fetch(`http://localhost:5000/applications/status/${id}`,{
+fetch(`https://research-ethics-portal-v2.conrender.com/applications/status/${id}`,{
 
 method:"PUT",
 
