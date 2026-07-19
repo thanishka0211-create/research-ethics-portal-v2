@@ -97,7 +97,7 @@ function loadApplications(){
 
 table.innerHTML="";
 
-fetch("https://research-ethics-portal-v2.onrender.com/applications")
+fetch("https://research-ethics-portal-v2.onrender.com/applications/status")
 .then(res=>res.json())
 .then(data=>{
 
@@ -166,7 +166,7 @@ Reject
 
 function updateStatus(id,status){
 
-fetch(`https://research-ethics-portal-v2.onrender.com/applications/status/${id}`,{
+fetch(`https://research-ethics-portal-v2.onrender.com/api/applications/status/${id}`,{
 
 method:"PUT",
 
