@@ -26,7 +26,7 @@
     New Research Application
 </h2>
 
-<form id="applicationForm">
+<form id="applicationForm" enctype="multipart/form-data">
 
 <h3 style="color:#1E3A5F;margin-bottom:10px;">
     Project Details
@@ -158,14 +158,14 @@
 
 <h3 style="color:#1E3A5F;">Attachments</h3>
 
-<label>Upload Proposal</label>
-<input type="file" id="proposal_file">
+<label>Upload Proposal (PDF)</label>
+<input type="file" id="proposal_file" name="proposal_file" accept=".pdf" required>
 
-<label>Upload Consent Form</label>
-<input type="file" id="consent_file">
+<label>Upload Consent Form (PDF)</label>
+<input type="file" id="consent_file" name="consent_file" accept=".pdf">
 
-<label>Upload Supporting Documents</label>
-<input type="file" id="supporting_file">
+<label>Upload Supporting Documents (PDF)</label>
+<input type="file" id="supporting_file" name="supporting_file" accept=".pdf">
 
 <hr>
 <h3 style="color:#1E3A5F;">Declaration</h3>
@@ -195,68 +195,81 @@
 </div>
 <script>
 document.getElementById("applicationForm").addEventListener("submit", async function(e) {
+
     e.preventDefault();
-    const user= JSON.parse(localStorage.getItem("user"));
-    const application = {
-        research_title: document.getElementById("research_title").value,
-        research_area: document.getElementById("research_area").value,
-        principal_investigator: document.getElementById("principal_investigator").value,
-        objective: document.getElementById("objective").value,
-        methodology: document.getElementById("methodology").value,
-        start_date: document.getElementById("start_date").value,
-        end_date: document.getElementById("end_date").value,
-        researcher_email:user.email,
-        proposal_file: document.getElementById("proposal_file").value,
-        consent_file: document.getElementById("consent_file").value,
-        supporting_file: document.getElementById("supporting_file").value
-    };
 
-    try {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-        const response = await fetch("/applications/submit", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(application)
+    const formData = new FormData();
+
+    formData.append("research_title", document.getElementById("research_title").value);
+    formData.append("research_area", document.getElementById("research_area").value);
+    formData.append("principal_investigator", document.getElementById("principal_investigator").value);
+    formData.append("objective", document.getElementById("objective").value);
+    formData.append("methodology", document.getElementById("methodology").value);
+    formData.append("start_date", document.getElementById("start_date").value);
+    formData.append("end_date", document.getElementById("end_date").value);
+    formData.append("researcher_email", user.email);
+
+    if(document.getElementById("proposal_file").files.length > 0){
+        formData.append("proposal_file", document.getElementById("proposal_file").files[0]);
+    }
+
+    if(document.getElementById("consent_file").files.length > 0){
+        formData.append("consent_file", document.getElementById("consent_file").files[0]);
+    }
+
+    if(document.getElementById("supporting_file").files.length > 0){
+        formData.append("supporting_file", document.getElementById("supporting_file").files[0]);
+    }
+
+    try{
+
+        console.log("Submit button clicked");
+        const response = await fetch("http://localhost:5000/applications/submit",{
+            method:"POST",
+            body:formData
         });
 
         const data = await response.json();
 
-        if (response.ok) {
+        if(response.ok){
 
-    Swal.fire({
-        icon: "success",
-        title: "Application Submitted!",
-        text: data.message,
-        confirmButtonColor: "#1E3A5F"
-    }).then(() => {
-        window.location.href = "myapplications.html";
-    });
+        Swal.fire({
+            icon: "success",
+            title: "Application Submitted!",
+            text: data.message,
+            confirmButtonColor: "#1E3A5F",
+            timer: 3000,
+            timerProgressBar: true,
+            showConfirmButton: false
+}).then(() => {
+    //window.location.href = "myapplications.html";
+});    
 
-} else {
+        }else{
 
-    Swal.fire({
-        icon: "error",
-        title: "Submission Failed",
-        text: data.message,
-        confirmButtonColor: "#1E3A5F"
-    });
+            Swal.fire({
+                icon:"error",
+                title:"Submission Failed",
+                text:data.message,
+                confirmButtonColor:"#1E3A5F"
+            });
 
-}
+        }
 
-    } catch (error) {
-    console.error(error);
+    }catch(error){
 
-    Swal.fire({
-        icon: "error",
-        title: "Server Error",
-        text: "Unable to connect to the server.",
-        confirmButtonColor: "#1E3A5F"
-    });
-}
+        console.error(error);
+
+        Swal.fire({
+            icon:"error",
+            title:"Server Error",
+            text:"Unable to connect to the server.",
+            confirmButtonColor:"#1E3A5F"
+        });
+
+    }
+
 });
 </script>
-
-</body>
-</html>

@@ -70,6 +70,9 @@ button{
 <th>Research Title</th>
 <th>Research Area</th>
 <th>Principal Investigator</th>
+<th>Proposal</th>
+<th>Consent</th>
+<th>Supporting</th>
 <th>Status</th>
 <th>Action</th>
 </tr>
@@ -107,6 +110,24 @@ table.innerHTML += `
 <td>${app.research_title}</td>
 <td>${app.research_area}</td>
 <td>${app.principal_investigator}</td>
+
+<td>
+${app.proposal_file
+? `<a href="https://research-ethics-portal-v2.onrender.com/uploads/${app.proposal_file}" target="_blank">View</a>`
+: "No File"}
+</td>
+
+<td>
+${app.consent_file
+? `<a href="https://research-ethics-portal-v2.onrender.com/uploads/${app.consent_file}" target="_blank">View</a>`
+: "No File"}
+</td>
+
+<td>
+${app.supporting_file
+? `<a href="https://research-ethics-portal-v2.onrender.com/uploads/${app.supporting_file}" target="_blank">View</a>`
+: "No File"}
+</td>
 
 <td>
 <span class="${app.status.toLowerCase()}">

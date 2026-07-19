@@ -36,6 +36,7 @@ if (registerForm) {
                     icon: "success",
                     title: "Registration Successful!",
                     text: data.message,
+                    timer:3000,
                     confirmButtonColor: "#1E3A5F"
                 }).then(() => {
                     window.location.href = "login.html";
@@ -83,12 +84,12 @@ if (loginForm) {
         const loginData = {
     email: document.getElementById("login_email").value,
     password: document.getElementById("login_password").value,
-    role: "Researcher"
+    role: document.getElementById("login_role").value
 };
 
         try {
 
-            const response = await fetch("https://research-ethics-portal-v2.onrender.com/api/users/login", {
+            const response = await fetch("http://localhost:5000/api/users/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
