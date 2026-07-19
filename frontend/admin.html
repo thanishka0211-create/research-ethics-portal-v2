@@ -97,7 +97,7 @@ function loadApplications(){
 
 table.innerHTML="";
 
-fetch("https://research-ethics-portal-v2.onrender.com/applications/status")
+fetch("https://research-ethics-portal-v2.onrender.com/api/applications")
 .then(res=>res.json())
 .then(data=>{
 
