@@ -26,6 +26,10 @@ app.get("/", (req, res) => {
 });
 
 // API Routes
+app.use((req, res, next) => {
+    console.log(req.method, req.originalUrl);
+    next();
+});
 app.use("/api/users", userRoutes);
 app.use("/applications", applicationRoutes);
 
