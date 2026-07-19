@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve Frontend
 app.use(express.static(path.join(__dirname, "../frontend")));
 
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+
 // Home Route
 app.get("/", (req, res) => {
     res.sendFile(path.join(__dirname, "../frontend/index.html"));

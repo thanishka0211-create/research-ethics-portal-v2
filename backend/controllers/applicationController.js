@@ -2,6 +2,9 @@ const applicationModel = require("../models/applicationModel");
 
 // Submit Application
 const submitApplication = (req, res) => {
+    console.log("Controller reached");
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILES:", req.files);
 
     const applicationData = {
         research_title: req.body.research_title,
@@ -11,28 +14,37 @@ const submitApplication = (req, res) => {
         methodology: req.body.methodology,
         start_date: req.body.start_date,
         end_date: req.body.end_date,
-        researcher_email:req.body.researcher_email,
-        proposal_file: req.body.proposal_file,
-        consent_file: req.body.consent_file,
-        supporting_file: req.body.supporting_file
+        researcher_email: req.body.researcher_email,
+
+        proposal_file: req.files && req.files.proposal_file
+            ? req.files.proposal_file[0].filename
+            : null,
+
+        consent_file: req.files && req.files.consent_file
+            ? req.files.consent_file[0].filename
+            : null,
+
+        supporting_file: req.files && req.files.supporting_file
+            ? req.files.supporting_file[0].filename
+            : null
     };
-      
-    console.log("REQ BODY:",req.body);
-    console.log("APLLICATION DATA:",applicationData);
+
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILES:", req.files);
 
     applicationModel.createApplication(applicationData, (err, result) => {
 
         if (err) {
-    console.error("MYSQL ERROR:");
-    console.error(err);
-    console.error(err.sqlMessage);
-    console.error(err.code);
+            console.error("MYSQL ERROR:");
+            console.error(err);
+            console.error(err.sqlMessage);
+            console.error(err.code);
 
-    return res.status(500).json({
-        success: false,
-        message: err.sqlMessage
-    });
-}
+            return res.status(500).json({
+                success: false,
+                message: err.sqlMessage || err.message
+            });
+        }
 
         res.json({
             success: true,
@@ -43,7 +55,6 @@ const submitApplication = (req, res) => {
 
 };
 
-// Get Applications
 // Get Applications
 const getApplications = (req, res) => {
 
@@ -79,7 +90,8 @@ const updateStatus = (req, res) => {
             console.log(err);
 
             return res.status(500).json({
-                message:err.sqlMessage || err.message
+                success: false,
+                message: err.sqlMessage || err.message
             });
         }
 

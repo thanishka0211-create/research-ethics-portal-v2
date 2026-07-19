@@ -20,19 +20,31 @@ const createApplication = (applicationData, callback) => {
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)
     `;
 
-    db.query(sql, [
-        applicationData.research_title,
-        applicationData.research_area,
-        applicationData.principal_investigator,
-        applicationData.objective,
-        applicationData.methodology,
-        applicationData.start_date,
-        applicationData.end_date,
-        applicationData.researcher_email,
-        applicationData.proposal_file,
-        applicationData.consent_file,
-        applicationData.supporting_file
-    ], callback);
+   console.log("Before DB Query");
+
+db.query(sql, [
+    applicationData.research_title,
+    applicationData.research_area,
+    applicationData.principal_investigator,
+    applicationData.objective,
+    applicationData.methodology,
+    applicationData.start_date,
+    applicationData.end_date,
+    applicationData.researcher_email,
+    applicationData.proposal_file,
+    applicationData.consent_file,
+    applicationData.supporting_file
+], (err, result) => {
+
+    console.log("DB Query Finished");
+
+    if (err) {
+        console.log(err);
+    }
+
+    callback(err, result);
+});
+
 };
 
 // Get All Applications
